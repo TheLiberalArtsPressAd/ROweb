@@ -23,6 +23,9 @@ raw/
 /*.json
 /*.log
 
+# Older local exports left in the asset source directory
+/web/index.*
+
 # Python
 __pycache__/
 *.pyc
