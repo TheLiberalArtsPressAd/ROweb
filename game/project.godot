@@ -1,0 +1,37 @@
+; Engine configuration file.
+; Ragnarok Offline — web client
+
+config_version=5
+
+[application]
+
+config/name="Ragnarok Offline"
+config/description="A small, web-playable Ragnarok Online client (Prontera vertical slice)."
+config/version="1.0.0"
+run/main_scene="res://main.tscn"
+run/max_fps=60
+config/features=PackedStringArray("4.7", "GL Compatibility")
+config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.08, 0.07, 0.11, 1)
+boot_splash/show_image=false
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+anti_aliasing/quality/msaa_3d=0
+environment/defaults/default_clear_color=Color(0.05, 0.05, 0.08, 1)
+
+[audio]
+
+buses/default_bus_layout=""

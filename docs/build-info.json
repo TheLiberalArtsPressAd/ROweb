@@ -1,0 +1,12 @@
+{
+  "built": "2026-10-25T18:59:04",
+  "files": 238,
+  "total_bytes": 57779644,
+  "total_mib": 55.1,
+  "wasm_bytes": 39514754,
+  "wasm_memory_max_mib": 1024,
+  "largest": {
+    "path": "index.wasm",
+    "bytes": 39514754
+  }
+}

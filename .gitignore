@@ -1,0 +1,28 @@
+# Godot editor cache
+game/.godot/
+
+# Local build output (the published site lives in docs/)
+build/
+
+# Local Godot binaries / templates
+godot_bin/
+
+# Local test captures / browser profiles
+out/
+
+# Heavy local source material (GRFs, carved GRF dumps, download cache)
+downloads/
+clientroot/
+carved/
+carved0/
+carve_test/
+raw/
+
+# Scratch scripts at the repository root
+/*.py
+/*.json
+/*.log
+
+# Python
+__pycache__/
+*.pyc
