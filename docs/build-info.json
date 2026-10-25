@@ -1,7 +1,7 @@
 {
-  "built": "2026-10-25T19:09:56",
+  "built": "2026-10-25T19:14:01",
   "files": 238,
-  "total_bytes": 57780204,
+  "total_bytes": 57780188,
   "total_mib": 55.1,
   "wasm_bytes": 39514754,
   "wasm_memory_max_mib": 1024,

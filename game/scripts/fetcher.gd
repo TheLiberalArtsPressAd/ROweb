@@ -8,7 +8,7 @@ extends Node
 signal progress(done: int, total: int)
 
 var base_url := ""
-var max_parallel := 6
+var max_parallel := 12
 
 var _inflight := 0
 var _done := 0

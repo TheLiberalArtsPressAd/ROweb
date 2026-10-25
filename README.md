@@ -115,6 +115,15 @@ work.
 
 ## Notes
 
+- If the page shows **“could not load assets/manifest.json”**, do a hard
+  refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`). GitHub Pages caches `index.pck` for
+  10 minutes, so an older client can survive a deployment. Opening
+  `docs/index.html` directly from disk (`file://`) cannot work — use the Pages
+  URL or `tools/serve.py`.
+- The client disables Godot's own gzip decompression (`HTTPRequest.accept_gzip
+  = false`). Browsers already decompress `gzip`/`br` responses for the
+  `fetch()` that backs `HTTPRequest` on the web; decompressing twice fails with
+  a `StreamPeerGZIP` error, which GitHub Pages' gzipped JSON triggered.
 - Ragnarok Online is a trademark of Gravity Co., Ltd. This repository is a
   technical demo built from locally owned game files; do not redistribute the
   original GRF or extracted assets commercially.
