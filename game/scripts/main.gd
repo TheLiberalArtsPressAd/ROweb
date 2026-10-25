@@ -27,6 +27,9 @@ var _fade: ColorRect
 var _help: Label
 var _title: Label
 var _loading_box: VBoxContainer
+var _retry: Button
+
+var _loading := false
 
 
 func _ready() -> void:
@@ -115,6 +118,12 @@ func _on_progress(done: int, total: int) -> void:
 
 
 func _load_world() -> void:
+	_loading = true
+	await _load_world_inner()
+	_loading = false
+
+
+func _load_world_inner() -> void:
 	_set_status("loading manifest")
 	var manifest: Variant = await fetcher.fetch_json("assets/manifest.json")
 	if manifest == null:
@@ -219,11 +228,56 @@ func _load_world() -> void:
 
 
 func _fail(msg: String) -> void:
-	push_error(msg)
+	var detail := fetcher.last_error if fetcher != null else ""
+	var text := msg
+	if detail != "" and not detail.begins_with(msg):
+		text += "\n" + detail
+	push_error(text)
 	if _status != null:
-		_status.text = msg
+		_status.text = text + "\n\ncheck the connection, then press R or click Retry"
+	if _bar != null:
+		_bar.visible = false
+	if _retry == null:
+		_retry = Button.new()
+		_retry.text = "Retry"
+		_retry.custom_minimum_size = Vector2(140, 40)
+		_retry.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		_retry.pressed.connect(_retry_load)
+		_loading_box.add_child(_retry)
+	_retry.visible = true
 	if OS.get_cmdline_user_args().has("--selftest"):
 		get_tree().quit(1)
+
+
+func _retry_load() -> void:
+	if _loading:
+		return
+	_retry.visible = false
+	_bar.visible = true
+	_bar.value = 0
+	_reset_scene()
+	await _load_world()
+
+
+## Drop everything the previous (possibly half-built) attempt created so a retry
+## starts from a clean slate instead of stacking a second map on top.
+func _reset_scene() -> void:
+	for e in _entities:
+		if is_instance_valid(e):
+			e.queue_free()
+	_entities.clear()
+	player = null
+	if world != null:
+		world.queue_free()
+		world = null
+	if bgm != null:
+		bgm.queue_free()
+		bgm = null
+	cam.target = null
+	_manifest = {}
+	_started = false
+	_loading_box.visible = true
+	_help.visible = false
 
 
 static func _asset_path(path: String) -> String:
@@ -324,6 +378,14 @@ func _screen_to_ground(screen_pos: Vector2) -> Vector3:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		var key_event := event as InputEventKey
+		if key_event.keycode == KEY_H:
+			_help.visible = not _help.visible
+			return
+		if key_event.keycode == KEY_R and not _started and _retry != null and _retry.visible:
+			_retry_load()
+			return
 	if not _started:
 		return
 	if event is InputEventMouseButton:
@@ -342,10 +404,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _dragging:
 		var mm := event as InputEventMouseMotion
 		cam.rotate_by(mm.relative.x, mm.relative.y)
-	elif event is InputEventKey and event.pressed:
-		var key := event as InputEventKey
-		if key.keycode == KEY_H:
-			_help.visible = not _help.visible
 
 
 func _process(_delta: float) -> void:

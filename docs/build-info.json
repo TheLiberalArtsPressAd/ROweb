@@ -1,8 +1,11 @@
 {
-  "built": "2026-10-25T19:14:01",
-  "files": 238,
-  "total_bytes": 57780188,
-  "total_mib": 55.1,
+  "built": "2026-10-25T19:25:51",
+  "client_build": "edda618335",
+  "asset_build": "b382686860eb",
+  "pack": "index.edda618335.pck",
+  "files": 241,
+  "total_bytes": 57922711,
+  "total_mib": 55.24,
   "wasm_bytes": 39514754,
   "wasm_memory_max_mib": 1024,
   "largest": {
