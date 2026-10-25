@@ -89,11 +89,25 @@ await send("Page.navigate", { url });
 
 const deadline = Date.now() + waitSeconds * 1000;
 let ready = false;
-let shot = 0;
 while (Date.now() < deadline) {
   await sleep(1500);
   if (logs.some((l) => l.includes("selftest:") || l.includes("ready"))) ready = true;
   if (ready) break;
+}
+
+const zoom = Number(process.env.ZOOM || 0);
+if (zoom !== 0) {
+  for (let i = 0; i < Math.abs(zoom); i++) {
+    await send("Input.dispatchMouseEvent", {
+      type: "mouseWheel",
+      x: 620,
+      y: 320,
+      deltaX: 0,
+      deltaY: zoom > 0 ? -120 : 120,
+    });
+    await sleep(120);
+  }
+  await sleep(1800);
 }
 
 const res = await send("Page.captureScreenshot", { format: "png" });

@@ -152,6 +152,32 @@ func nearest_walkable(cell: Vector2i) -> Vector2i:
 	return cell
 
 
+## True when a cell and all eight neighbours are walkable, i.e. it is part of
+## an open plaza rather than a one-tile gap inside a prop (the fountain bowl).
+func is_open_area(cell: Vector2i) -> bool:
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var x := cell.x + dx
+			var y := cell.y + dy
+			if x < 0 or y < 0 or x >= _walk_w or y >= _walk_h:
+				return false
+			if _walk[y * _walk_w + x] == 0:
+				return false
+	return true
+
+
+func nearest_open_cell(cell: Vector2i) -> Vector2i:
+	for radius in range(0, 32):
+		for dy in range(-radius, radius + 1):
+			for dx in range(-radius, radius + 1):
+				if maxi(absi(dx), absi(dy)) != radius:
+					continue
+				var c := cell + Vector2i(dx, dy)
+				if is_open_area(c):
+					return c
+	return nearest_walkable(cell)
+
+
 func find_path(from: Vector3, to: Vector3) -> Array:
 	var a := nearest_walkable(Vector2i(int(from.x), int(from.z)))
 	var b := nearest_walkable(Vector2i(int(to.x), int(to.z)))

@@ -6,8 +6,8 @@ extends Node3D
 var target: Node3D
 var yaw_deg := 0.0
 var pitch_deg := 45.0
-var distance := 44.0
-var target_distance := 44.0
+var distance := 52.0
+var target_distance := 52.0
 var min_distance := 16.0
 var max_distance := 130.0
 var follow_speed := 10.0

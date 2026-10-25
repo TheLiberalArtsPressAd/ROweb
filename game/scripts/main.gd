@@ -257,7 +257,7 @@ func _spawn_player(entries: Array, blobs: Dictionary, sprite_paths: Array[String
 	var sp: Array = manifest.get("spawn", [156.0, 196.0])
 	# The GND spawn point can sit on unwalkable geometry (the fountain); snap it
 	# to the closest walkable cell so the player never starts inside a prop.
-	var cell := world.nearest_walkable(Vector2i(int(sp[0]), int(sp[1])))
+	var cell := world.nearest_open_cell(Vector2i(int(sp[0]), int(sp[1])))
 	var x := float(cell.x) + 0.5
 	var z := float(cell.y) + 0.5
 	player.position = Vector3(x, world.ground_height(x, z), z)
