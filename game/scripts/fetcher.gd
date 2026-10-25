@@ -37,6 +37,10 @@ func set_total(n: int) -> void:
 func _load_url(url: String) -> PackedByteArray:
 	var req := HTTPRequest.new()
 	req.timeout = 60.0
+	# Browsers already decompress gzip/br responses for the fetch() that backs
+	# HTTPRequest on the web. Letting Godot decompress again makes it fail with
+	# a StreamPeerGZIP error on GitHub Pages (which gzips JSON).
+	req.accept_gzip = false
 	add_child(req)
 	var err := req.request(url)
 	if err != OK:
@@ -82,6 +86,7 @@ func fetch_many(paths: Array) -> Dictionary:
 			var p: String = _batch_queue.pop_front()
 			var req := HTTPRequest.new()
 			req.timeout = 60.0
+			req.accept_gzip = false
 			add_child(req)
 			req.request_completed.connect(_on_batch_response.bind(p, req), CONNECT_ONE_SHOT)
 			var err := req.request(base_url + p)
